@@ -10,3 +10,11 @@ ht:
 	@echo " Compile hp_main ...";
 	gcc -I ./include/ -L ./lib/ -Wl,-rpath,./lib/ ./examples/ht_main.c ./src/record.c ./src/ht_table.c -lbf -o ./build/ht_main -O2
 
+run: hp
+	@echo "Running..."
+	rm -f ./data.db
+	./build/hp_main
+
+clean:
+	@echo "Cleaning up..."
+	rm -f ./build/hp_main ./build/bf_main ./build/ht_main ./data.db

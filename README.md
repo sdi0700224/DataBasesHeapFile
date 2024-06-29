@@ -18,3 +18,8 @@ make hp;
 Για να τρέξετε το εκτελέσιμο:
 
 ./build/bf_main
+
+# Known Issues
+
+-For big inputs libbf.so library that is being used for the communication with the OS may throw an error. This bug is not part
+ of this implementation but it's effect is being seen here.

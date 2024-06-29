@@ -1,20 +1,35 @@
-hp:
-	@echo " Compile hp_main ...";
-	gcc -I ./include/ -L ./lib/ -Wl,-rpath,./lib/ ./examples/hp_main.c ./src/record.c ./src/hp_file.c -lbf -o ./build/hp_main -O2
+# Directories
+BUILD_DIR := ./build
+LIB_DIR := ./lib
+INCLUDE_DIR := ./include
+SRC_DIR := ./src
+EXAMPLES_DIR := ./examples
 
-bf:
-	@echo " Compile bf_main ...";
-	gcc -I ./include/ -L ./lib/ -Wl,-rpath,./lib/ ./examples/bf_main.c ./src/record.c -lbf -o ./build/bf_main -O2;
+# Compiler and flags
+CC := gcc
+CFLAGS := -I$(INCLUDE_DIR) -L$(LIB_DIR) -Wl,-rpath,$(LIB_DIR) -O2
+LIBS := -lbf
 
-ht:
-	@echo " Compile hp_main ...";
-	gcc -I ./include/ -L ./lib/ -Wl,-rpath,./lib/ ./examples/ht_main.c ./src/record.c ./src/ht_table.c -lbf -o ./build/ht_main -O2
+# Targets
+hp: $(BUILD_DIR)/hp_main
 
+# Rules for building executables
+$(BUILD_DIR)/hp_main: $(EXAMPLES_DIR)/hp_main.c $(SRC_DIR)/record.c $(SRC_DIR)/hp_file.c | $(BUILD_DIR)
+	@echo "Compiling hp_main ..."
+	$(CC) $(CFLAGS) $^ $(LIBS) -o $@
+
+# Run target
 run: hp
 	@echo "Running..."
 	rm -f ./data.db
 	./build/hp_main
 
+# Clean target
 clean:
 	@echo "Cleaning up..."
-	rm -f ./build/hp_main ./build/bf_main ./build/ht_main ./data.db
+	rm -rf $(BUILD_DIR)
+	rm -f ./data.db
+
+# Ensure build directory exists
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
